@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk';
+import commonMiddleware from '../lib/commonMiddleware';
 import createError from 'http-errors';
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
@@ -12,6 +13,7 @@ async function getAuctions(event, context) {
         }).promise();
 
         auctions = result.Items;
+
     } catch (error) {
         console.error(error);
         throw new createError.InternalServerError(error);
@@ -23,4 +25,4 @@ async function getAuctions(event, context) {
     };
 }
 
-export const handler = getAuctions;
+export const handler = commonMiddleware(getAuctions);
